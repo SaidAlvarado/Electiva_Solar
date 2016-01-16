@@ -11,6 +11,9 @@
 // Dibuja la interfaz en blanco de la informacion de la bateria.
 void Bat_initInterface(GLCD *glcd_p){
 
+    //Limpiamos la pantalla de lo que sea que tenga
+    LCD_clearScreen(glcd_p);
+
     int i,j;
 
     //Actualizamos el apuntador
@@ -28,28 +31,24 @@ void Bat_initInterface(GLCD *glcd_p){
     // Imprimimos Tmax y T prom
     delay(80);
     LCD_print(glcd_p, 0, 15, 4, "Tmax");
-    LCD_print(glcd_p, tmax_pos_x, tmax_pos_y, 4, "88.8");
+    // LCD_print(glcd_p, tmax_pos_x, tmax_pos_y, 4, "88.8");
     delay(40);
     LCD_drawCircle(glcd_p, 26,25,1,1);  // circulito de los grados centigrados
     LCD_drawCircle(glcd_p, 26,48,1,1);
     delay(30);
     LCD_print(glcd_p, 0, 38, 5, "Tprom");
-    LCD_print(glcd_p, tprom_pos_x, tprom_pos_y, 4, "88.8");
     LCD_print(glcd_p, 29, 25, 1, "C");
     LCD_print(glcd_p, 29, 48, 1, "C");
 
     //imprimimos los datos de corriente de abajo
     delay(45);
-    LCD_print(glcd_p, 45,56,9,"Out 88.8A");
+    LCD_print(glcd_p, 45,56,9,"Out     A");
     delay(30);
-    LCD_print(glcd_p, 45,46,9,"In  88.8A");
+    LCD_print(glcd_p, 45,46,9,"In      A");
 
     //Imprimimos los digitos gordos del voltaje
     delay(80);
-    LCD_printFatDigit(glcd_p, '\0', vbat_0_pos_x, vbat_0_pos_y, 8);
-    LCD_printFatDigit(glcd_p, '\0', vbat_1_pos_x, vbat_1_pos_y, 8);
     LCD_fatPixel(glcd_p, 71, 33, 1);
-    LCD_printFatDigit(glcd_p, '\0', vbat_2_pos_x, vbat_2_pos_y, 8);
     LCD_print(glcd_p, 87,28,1, "V");
     delay(30);
     // Dibujamos los indicadores de nivel al lado de la barra
@@ -214,7 +213,7 @@ void Bat_updateVbat(GLCD *glcd_p, float vbat){
         // Si es un espacio en blanco, lo borramos.
         if (str_vbat[0] == ' ') LCD_eraseRect(glcd_p, vbat_0_pos_x,vbat_0_pos_y,vbat_0_pos_x + 12, vbat_0_pos_y + 16);
         // Si es un numero, lo dibujamos.
-        else LCD_printFatDigit(glcd_p,  '\0', vbat_0_pos_x, vbat_0_pos_y, (uint8_t) str_vbat[0] - 0x30);
+        else LCD_printFatDigit(glcd_p, glcd_p->v_0, vbat_0_pos_x, vbat_0_pos_y, (uint8_t) str_vbat[0] - 0x30);
     }
     // guardamos el nuevo valor
     glcd_p->v_0 = str_vbat[0];
